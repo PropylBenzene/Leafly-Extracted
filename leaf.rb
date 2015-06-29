@@ -33,8 +33,8 @@ results = c.zip(d) #Combines the name and pricing together intensically. Next to
 some = results[1..10] # This is needed to have a reduced amount to interact with in the IRB.
 
 #Sorts by Price
-some.sort_by! do |p|
-	p[1][0]["Price"].to_i
+some.sort_by! do |x|
+	x[1][0]["Price"].to_i
 end
 
 #This creates this kind of formatting - :
