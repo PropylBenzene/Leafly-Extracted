@@ -31,12 +31,6 @@ c = formatted_data.each.map {|x| x["name"]}
 d = formatted_data.each.map {|x| x["pricing"]}
 results = c.zip(d) #Combines the name and pricing together intensically. Next to filter out the percentage ranking to sort between the types offered and to sort by price etc.
 some = results[1..10] # This is needed to have a reduced amount to interact with in the IRB.
-
-#Sorts by Price
-some.sort_by! do |p|
-	p[1][0]["Price"].to_i
-end
-
 #This creates this kind of formatting - :
 #[BUBBLE HASH - (BB) 1g DURBAN POISON          ][Gram     ][15.0 ]
 #[CART .3G LEMON SKUNK                         ][0.3g     ][14.0 ]
@@ -50,7 +44,7 @@ end
 #[CART 1G BLUE ASIAN DREAM                     ][Gram     ][22.75]
 #
 #It is obvious what needs fixed. I dunno how though.
-
 some.each do |x|
 puts "[%-45s]" % "#{x[0]}" + "[%-13s]" % "#{x[1][0]["Unit"]}" +  "[%+6s]" % "#{x[1][0]["Price"]}" 
 end
+
