@@ -44,7 +44,7 @@ results.sort_by! do |x|
 	puts x.inspect
 	x[1][0]["Price"].to_i
 end
-
+@a
 #Puts the output out.
 results.each do |x|
 puts "[%-45s]" % "#{x[0]}" + "[%-13s]" % "#{x[1][0]["Unit"]}" +  "[%+6s]" % "#{x[1][0]["Price"]}" 
@@ -52,7 +52,7 @@ end
 
 
 #--How to write a file.
-#output = File.open( "prices.txt","w" )
-#output.write
-#output.close
+output = File.open( "prices.txt","w" )
+output.write @a
+output.close
 
