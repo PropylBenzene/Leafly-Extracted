@@ -1,9 +1,0 @@
-- Compile all {slugs} and sort them into an array by price as a class or two
-	= Have the array also transform the slug name into an injected point into the array so it can be added as a listing for the place it is being sold at.
-- Colour code various parts of the output.
-- Begin database support for pricing.
-- Begin scrubbing out erroneous data.
-- pull wax/shatter/cart/stuff into new category to display.
-- Build name hashes for the slugs.
-- Begin guilding a stripper/hash for the farms/breeders/types of oils.
-
