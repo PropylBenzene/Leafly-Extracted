@@ -10,7 +10,7 @@ time = Time.now.year.to_s. + "_" + Time.now.month.to_s + "_" + Time.now.day.to_s
 
 #This section loops to get the slugs for the menu pulls - Should have a condition to keep looping i++ until nil returns.
 for i in 0..2 do
-locations = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=505&latitude=45.4278&longitude=-122.7789'`
+locations = `curl -v -H "app_id:" -H "app_key:" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=505&latitude=45.4278&longitude=-122.7789'`
 locations_parsed = JSON.parse(locations)
 isolate_slugs = JsonPath.new('$.stores[?(@.name != "")]')
 slugs = isolate_slugs.on(locations_parsed)
