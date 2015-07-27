@@ -34,18 +34,46 @@ puts @formatted_data
 c = @compiled.each.map {|x| x["name"]}
 d = @compiled.each.map {|x| x["pricing"]} # Need to do a .each here to do the different units of pricing.
 e = @compiled.each.map {|x| x["Store"]}
-@results = c.zip(d,e) #Combines the name and pricing together 
+f = @compiled.each.map {|x| x["description"]}
+@results = c.zip(d,e,f) #Combines the name and pricing together 
 @results.reject! { |y| y[1][0].nil? }
+
+if ARGV[2] != nil
+	@results.reject! { |y| y[1][0]["Price"] > ARGV[2].to_i }
+#	@results.reject! { |y| y[2][0]["Unit"] != "Gram" }
+end
 end
 
-##sorts by price.
+##sorts by ARGV[1].
 Hash[*@names.flatten]
-@results.sort_by! do |x|
+
+if ARGV[1].downcase == "price"
+	@results.sort_by! do |x|
 	x[1][0]["Price"]
+	end
+elsif 
+	ARGV[1].downcase == "name"
+	@results.sort_by! do |x|
+	x[0]
+	end
 end
 
 #Puts the output out.
 
+tigardconcentratesortbyprice = ""
+
 @results.each do |x|
-puts "[%-60s]" % "#{x[0]}" + "[%-30s]" % "#{x[2]}" + "[%-13s]" % "#{x[1][0]["Unit"]}" +  "[%+6s]" % "#{x[1][0]["Price"]}" 
+
+if x[3] != nil
+x[3].gsub!("\n", " ")
+x[3].gsub!("   ", " ")
 end
+#puts "[%-60s]" % "#{x[0]}"[0..59] + "[%-30s]" % "#{x[3]}"[0..20] + "[%-30s]" % "#{x[2]}" + "[%-13s]" % "#{x[1][0]["Unit"]}" +  "[%+6s]" % "#{x[1][0]["Price"]}" 
+a = "[%-45s]" % "#{x[0]}"[0..39] + "[%-30s]" % "#{x[3]}"[0..29] + "[%-20s]" % "#{x[2]}"[0..19] + "[%-9s]" % "#{x[1][0]["Unit"]}" +  "[%+4s]" % "#{x[1][0]["Price"]}" 
+puts a
+tigardconcentratesortbyprice += a + "\n"
+end
+
+output = File.open("#{ARGV[0]}SortBy#{ARGV[1]}.txt", "w")
+output.puts tigardconcentratesortbyprice
+output.close
