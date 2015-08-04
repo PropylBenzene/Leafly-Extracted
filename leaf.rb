@@ -10,14 +10,24 @@ time = Time.now.year.to_s. + "_" + Time.now.month.to_s + "_" + Time.now.day.to_s
 
 #This section loops to get the slugs for the menu pulls - Should have a condition to keep looping i++ until nil returns.
 for i in 0..2 do
-locations = `curl -v -H "app_id:" -H "app_key:" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=505&latitude=45.4278&longitude=-122.7789'`
-locations_parsed = JSON.parse(locations)
+
+locations_tigard = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=505&latitude=45.4278&longitude=-122.7789'`
+locations_portland = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=505&latitude=45.5200&longitude=-122.6819'`
+locations_tigard_parsed = JSON.parse(locations_tigard)
+locations_portland_parsed = JSON.parse(locations_portland)
+
+#Need this corrected for isolating the name. $(Root Object).(Hash Name)stores[?(Filter)(@.name != "")(Inside the Current Object by the hash name "name" for anything that doesn't have "name" blank!)
 isolate_slugs = JsonPath.new('$.stores[?(@.name != "")]')
-slugs = isolate_slugs.on(locations_parsed)
-e = slugs.each.map { |x| x["name"]}
-f = slugs.each.map { |x| x["slug"]}
-compiled = f.zip(e)
-@names += compiled
+slugs_tigard = isolate_slugs.on(locations_tigard_parsed)
+slugs_portland = isolate_slugs.on(locations_portland_parsed)
+e = slugs_tigard.each.map { |x| x["name"]}
+f = slugs_tigard.each.map { |x| x["slug"]}
+g = slugs_portland.each.map { |x| x["name"]}
+h = slugs_portland.each.map { |x| x["slug"]}
+compiled_tigard = f.zip(e)
+compiled_portland = h.zip(g)
+@names += compiled_tigard
+@names += compiled_portland
 sleep(3)
 end
 
