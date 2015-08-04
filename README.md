@@ -1,10 +1,15 @@
 # Leafly-Extracted
 This is a project to pull data reliably from their API to do at first price comparisson on multiple strains from multiple dispensaries. It will evolve.
 
-Currently, it only pulls from a very close and specific dispensary that is starting to use a standarized naming system. The end result outputed is the name of the hash and the pricing, sorted by price.
+Currently, there are two functions, one that drops all the menus into a rethinkdb and one that parses out the data from the rethinkdb. There is an included script that is called auto.sh. It will run all the programs needed for my needs and passes out everything as a PDF, third parties may need be installed, and I'm running XUBUNTU so ya know, linux.
 
-Useage for leaf.rb is no command lines, simply let it run, default is set to Tigard, OR. Change the GPS in the CURL.
+Useage for leaf.rb is no command lines, simply let it run, default is set to Tigard, OR with an overlap to Portland, OR.
 
-Useage for leaf-read.rb is leaf-read.rb [Cateogry]
+Useage for leaf-read.rb is ruby leaf-read.rb [Cateogry] [Price/Name] [Optional price to cut off at]
 
-Useage for ed.rb.rb is ed.rb.rb [Category] [Name or Price] [Optional Highest Amount to Search for]
+The data is displayed as [Product Name][Description][Store][Unit][Price]
+
+The data is all displayed via embedded PDF's in my website : http://extractme.esy.es which was built and maintained by Suessical.
+
+
+
