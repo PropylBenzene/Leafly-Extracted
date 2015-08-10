@@ -7,12 +7,13 @@ cellar = r.connect(:host=>"localhost", :port=>"28015")
 igor = r
 time = Time.now.year.to_s. + "_" + Time.now.month.to_s + "_" + Time.now.day.to_s + "_" + Time.now.hour.to_s
 @names = Array.new
+@gps = String.new
 
 #This section loops to get the slugs for the menu pulls - Should have a condition to keep looping i++ until nil returns.
 for i in 0..2 do
 
-locations_tigard = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=505&latitude=45.4278&longitude=-122.7789'`
-locations_portland = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=505&latitude=45.5200&longitude=-122.6819'`
+locations_tigard = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=50&latitude=45.4278&longitude=-122.7789'`
+locations_portland = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=50&latitude=45.5200&longitude=-122.6819'`
 locations_tigard_parsed = JSON.parse(locations_tigard)
 locations_portland_parsed = JSON.parse(locations_portland)
 
@@ -24,8 +25,13 @@ e = slugs_tigard.each.map { |x| x["name"]}
 f = slugs_tigard.each.map { |x| x["slug"]}
 g = slugs_portland.each.map { |x| x["name"]}
 h = slugs_portland.each.map { |x| x["slug"]}
-compiled_tigard = f.zip(e)
-compiled_portland = h.zip(g)
+lat_tigard = slugs_tigard.each.map { |x| x["latitude"]}
+lon_tigard = slugs_tigard.each.map { |x| x["longitude"]}
+lat_portland = slugs_portland.each.map { |x| x["latitude"]}
+lon_portland = slugs_portland.each.map { |x| x["longitude"]}
+
+compiled_tigard = f.zip(e,lat_tigard,lon_tigard)
+compiled_portland = h.zip(g,lat_portland,lon_portland)
 @names += compiled_tigard
 @names += compiled_portland
 sleep(3)
@@ -81,3 +87,11 @@ sleep(10)
 
 end
 end
+@names.uniq!
+@names.each do |x|
+	@gps += x.join("\t") + "\n"
+end
+
+output = File.open("gps.txt", "w")
+output.puts @gps
+output.close
