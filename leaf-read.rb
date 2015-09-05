@@ -26,6 +26,7 @@ end
 @d = []
 @thing = []
 @some = []
+
 @table_array.each do |x|
 @parsed_data = igor.db("#{x[0]}").table("#{x[1]}").run(cellar)
 @temp = @parsed_data.to_a
@@ -102,16 +103,58 @@ if x[3] != nil
 	x[3].gsub!("\t", " ")
 end
 units = x[4].join("|")
+ 
 price = x[1].join("|")
-a = "[%-45s]" % "#{x[0]}"[0..39] + "[%-30s]" % "#{x[3]}"[0..29] + "[%-20s]" % "#{x[2]}"[0..19] + "[%-30s]" % "#{units}"[0..29] + "[%+22s]" % "#{price}" 
-puts a
-tigardconcentratesortbyprice += a + "\n"
+if ARGV[0] == "Flower"
+	units.gsub!("Gram", "1g")
+	units.gsub!("Eighth",  "3.5g")
+	units.gsub!("Quarter", "7g")
+	units.gsub!("Half",  "14g")
+	units.gsub!("One",  "28g")
+#Generating Loop for Header, every 46 Lines
+#	price.each do |y|
+#		a = y.to_i.to_s
+#		y = a
+#	end
+	a = "[%-27s]" % "#{x[0]}"[0..26] + "[%-25s]" % "#{x[3]}"[0..24] + "[%-20s]" % "#{x[2]}"[0..19] + "[%-17s]" % "#{units}"[0..16] + "[%+17s]" % "#{price}" 
+
+elsif ARGV[0] == "Concentrate"
+
+  	units.gsub!("Gram", "1g")
+	units.gsub!("Half Gram" "0.5g")
+	units.gsub!("HalfGram", "0.5g")
+	units.gsub!("Quarter", "7g")
+	units.gsub!("Eighth", "3.5g")
+	units.gsub!("qt. gram", "0.25g")
+	a = "[%-35s]" % "#{x[0]}"[0..34] + "[%-30s]" % "#{x[3]}"[0..29] + "[%-20s]" % "#{x[2]}"[0..19] + "[%-16s]" % "#{units}"[0..15] + "[%+7s]" % "#{price}" 
+
+elsif ARGV[0] == "Clone"
+	a = "[%-30s]" % "#{x[0]}"[0..29] + "[%-30s]" % "#{x[3]}"[0..29] + "[%-20s]" % "#{x[2]}"[0..19] + "[%-16s]" % "#{units}"[0..15] + "[%+12s]" % "#{price}" 	
+
+elsif ARGV[0] == "Seeds"
+		a = "[%-27s]" % "#{x[0]}"[0..26] + "[%-25s]" % "#{x[3]}"[0..24] + "[%-20s]" % "#{x[2]}"[0..19] + "[%-17s]" % "#{units}"[0..99] + "[%+17s]" % "#{price}" 
 
 end
 
-output = File.open("#{ARGV[0]}SortBy#{ARGV[1]}.txt", "w")
-output.puts tigardconcentratesortbyprice
-output.close
+
+puts a
+
+if a != nil
+	tigardconcentratesortbyprice += a + "\n"
+end
+
+puts tigardconcentratesortbyprice
+
+end
+if ARGV[0] != "Seeds"
+	output = File.open("#{ARGV[0]}sSortBy#{ARGV[1]}.txt", "w")
+	output.puts tigardconcentratesortbyprice
+	output.close
+else
+	output = File.open("#{ARGV[0]}SortBy#{ARGV[1]}.txt", "w")
+	output.puts tigardconcentratesortbyprice
+	output.close
+end
 
 output = File.open("#{ARGV[0]}notifications.txt", "w")
 output.puts notifications_list_array

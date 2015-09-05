@@ -69,7 +69,7 @@ if check.include?(time) == true
 	next
 else
 x[0].gsub!("_", "-")
-sata = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X GET "http://data.leafly.com/locations/#{x[0]}/menu"`
+sata = `curl -v -H "app_id:" -H "app_key:" -X GET "http://data.leafly.com/locations/#{x[0]}/menu"`
 sata.gsub!("\\/", "/") #\\ is for escaping the \
 sata.gsub!("][", ",")
 
