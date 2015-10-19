@@ -3,6 +3,9 @@ require 'json'
 require 'jsonpath'
 require 'rethinkdb'
 include RethinkDB::Shortcuts
+
+app_id = ""
+app_key = ""
 cellar = r.connect(:host=>"localhost", :port=>"28015")
 igor = r
 time = Time.now.year.to_s. + "_" + Time.now.month.to_s + "_" + Time.now.day.to_s + "_" + Time.now.hour.to_s
@@ -12,7 +15,7 @@ time = Time.now.year.to_s. + "_" + Time.now.month.to_s + "_" + Time.now.day.to_s
 #This section loops to get the slugs for the menu pulls - Should have a condition to keep looping i++ until nil returns.
 for i in 0..2 do
 
-locations_tigard = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=50&latitude=45.4278&longitude=-122.7789'`
+locations_tigard = `curl -v -H "#{app_id}" -H "#{app_key}" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=50&latitude=45.4278&longitude=-122.7789'`
 locations_portland = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X POST "http://data.leafly.com/locations" -d 'page=#{i}&take=50&latitude=45.5200&longitude=-122.6819'`
 locations_tigard_parsed = JSON.parse(locations_tigard)
 locations_portland_parsed = JSON.parse(locations_portland)
@@ -34,7 +37,7 @@ compiled_tigard = f.zip(e,lat_tigard,lon_tigard)
 compiled_portland = h.zip(g,lat_portland,lon_portland)
 @names += compiled_tigard
 @names += compiled_portland
-sleep(3)
+sleep(1)
 end
 
 #This section takes the names, sorts out the -'s to _'s and then sorts out the databases that are present versus ones that need to be created. I couldn't figure out the exception handling.
@@ -69,7 +72,7 @@ if check.include?(time) == true
 	next
 else
 x[0].gsub!("_", "-")
-sata = `curl -v -H "app_id:" -H "app_key:" -X GET "http://data.leafly.com/locations/#{x[0]}/menu"`
+sata = `curl -v -H "app_id:6682ef51" -H "app_key:55c6b0efcd2e2549ff360a5dde136a50" -X GET "http://data.leafly.com/locations/#{x[0]}/menu"`
 sata.gsub!("\\/", "/") #\\ is for escaping the \
 sata.gsub!("][", ",")
 
@@ -83,7 +86,7 @@ brains.each { |z| z["Store"] = x[0] } #This is added to inject the stored names 
 x[0].gsub!("-", "_")
 igor.db("#{x[0]}").table_create("#{time}").run(cellar)
 igor.db("#{x[0]}").table("#{time}").insert(brains).run(cellar)
-sleep(10)
+sleep(1)
 
 end
 end
