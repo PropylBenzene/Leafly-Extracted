@@ -44,6 +44,33 @@ f = @compiled.each.map {|x| x["description"]}
 @results = c.zip(@d,e,f,tor) #Combines the name and pricing together 
 @results.reject! { |y| y[1].nil? }
 @results.reject! { |y| y[1].empty? }
+@results.reject! { |y| y[0].include?("Topical")}
+@results.reject! { |y| y[0].include?("TOPICAL")}
+@results.reject! { |y| y[0].include?("Tinc")}
+@results.reject! { |y| y[0].include?("TINC")}
+@results.reject! { |y| y[0].include?("Tincture")}
+@results.reject! { |y| y[0].include?("Caps")}
+@results.reject! { |y| y[0].include?("CAPS")}
+@results.reject! { |y| y[0].include?("CAPSULES")}
+@results.reject! { |y| y[0].include?("Edible")}
+@results.reject! { |y| y[0].include?("Rations")}
+@results.reject! { |y| y[0].include?("Preroll")}
+@results.reject! { |y| y[0].include?("Pre-roll")}
+@results.reject! { |y| y[0].include?("Pre-Roll")}
+@results.reject! { |y| y[0].include?("Pre Roll")}
+@results.reject! { |y| y[0].include?("Top -")}
+@results.reject! { |y| y[0].include?("TOP")}
+@results.reject! { |y| y[0].include?("Salve")}
+@results.reject! { |y| y[0].include?("Lip Balm")}
+@results.reject! { |y| y[0].include?("Joints")}
+@results.reject! { |y| y[0].include?("Tailgatorz")}
+#@results.reject! { |y| y[0].include?("Caviar")}
+@results.reject! { |y| y[0].include?("Soaking Salts")}
+@results.reject! { |y| y[0].include?("Lip Buzz")}
+@results.reject! { |y| y[0].include?("Battery")}
+@results.reject! { |y| y[0].include?("Nana's Naturals")}
+
+
 
 if ARGV[2] != nil
 	@results.reject! { |y| y[1][0]["Price"] > ARGV[2].to_i }
@@ -111,6 +138,7 @@ if ARGV[0] == "Flower"
 	units.gsub!("Quarter", "7g")
 	units.gsub!("Half",  "14g")
 	units.gsub!("One",  "28g")
+	units.gsub!("1/21g", ".5g")
 #Generating Loop for Header, every 46 Lines
 #	price.each do |y|
 #		a = y.to_i.to_s

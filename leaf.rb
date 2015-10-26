@@ -4,8 +4,8 @@ require 'jsonpath'
 require 'rethinkdb'
 include RethinkDB::Shortcuts
 
-app_id = ""
-app_key = ""
+app_id = "app_id:6682ef51"
+app_key = "app_key:55c6b0efcd2e2549ff360a5dde136a50"
 cellar = r.connect(:host=>"localhost", :port=>"28015")
 igor = r
 time = Time.now.year.to_s. + "_" + Time.now.month.to_s + "_" + Time.now.day.to_s + "_" + Time.now.hour.to_s
